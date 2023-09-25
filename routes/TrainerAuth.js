@@ -15,6 +15,7 @@ router.post("/register", async (req, res) => {
 			process.env.PASS_SEC
 		).toString(),
 		phone: req.body.phone,
+    schedule: req.body.schedule
 	});
 
 	try {

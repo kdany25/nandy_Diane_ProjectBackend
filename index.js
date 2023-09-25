@@ -9,7 +9,7 @@ import cors from "cors";
 import Payment from "./routes/Payment";
 import TraineeAuth from "./routes/TraineeAuth";
 import Trainee from "./routes/Trainee";
-import TrainerAuth from "./routes/Trainer";
+import TrainerAuth from "./routes/TrainerAuth";
 import Trainer from "./routes/Trainer";
 
 const app = express();
