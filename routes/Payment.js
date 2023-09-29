@@ -58,6 +58,16 @@ router.get("/find/:id", async (req, res) => {
 	}
 });
 
+//Get one specific Payment
+router.get("/trainee/:id", async (req, res) => {
+	try {
+		const trainee = await Payment.find({ traineeId: req.params.id });
+
+		res.status(200).json(trainee);
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
 //Get all Payment
 router.get("/", async (req, res) => {
 	const query = req.query.new;

@@ -15,6 +15,13 @@ const TrainerSchema = new mongoose.Schema(
 				name: {
 					type: String,
 				},
+				phone: {
+					type: String,
+				},
+				package: {
+					type: String,
+				},
+				endingDate: { type: String, required: true },
 			},
 		],
 	},
