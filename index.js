@@ -11,6 +11,7 @@ import TraineeAuth from "./routes/TraineeAuth";
 import Trainee from "./routes/Trainee";
 import TrainerAuth from "./routes/TrainerAuth";
 import Trainer from "./routes/Trainer";
+import Manager from "./routes/Manager";
 
 const app = express();
 const PORT = process.env.PORT || 7001;
@@ -33,7 +34,7 @@ app.use("/api/TraineeAuth", cors(), TraineeAuth);
 app.use("/api/Trainee", cors(), Trainee);
 app.use("/api/TrainerAuth", cors(), TrainerAuth);
 app.use("/api/Trainer", cors(), Trainer);
-
+app.use("/api/Manager", cors(), Manager);
 
 app.listen(PORT, () => {
 	console.log("Backend Started");
