@@ -1,5 +1,5 @@
 import express from "express";
-import Trainer from "../models/Trainer.model"
+import Trainer from "../models/Trainer.model";
 import CryptoJS from "crypto-js";
 import jwt from "jsonwebtoken";
 
@@ -15,7 +15,9 @@ router.post("/register", async (req, res) => {
 			process.env.PASS_SEC
 		).toString(),
 		phone: req.body.phone,
-    schedule: req.body.schedule
+		schedule: req.body.schedule,
+		description: req.body.description,
+		aka:req.body.aka
 	});
 
 	try {
