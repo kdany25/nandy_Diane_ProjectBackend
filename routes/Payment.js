@@ -3,6 +3,7 @@ import Payment from "../models/Payment.model";
 
 const router = express.Router();
 
+// create payment 
 router.post("/", async (req, res) => {
 	const newPayment = new Payment(req.body);
 
@@ -68,6 +69,7 @@ router.get("/trainee/:id", async (req, res) => {
 		res.status(500).json(err);
 	}
 });
+
 //Get all Payment
 router.get("/", async (req, res) => {
 	const query = req.query.new;

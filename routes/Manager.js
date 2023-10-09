@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
 	}
 });
 
-//Trainee Login
+//Manager Login
 router.post("/login", async (req, res) => {
 	try {
 		const user = await Manager.findOne({
