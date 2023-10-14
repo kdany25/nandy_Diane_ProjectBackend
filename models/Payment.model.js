@@ -7,6 +7,8 @@ const PaymentSchema = new mongoose.Schema(
 		package: { type: String, required: true },
 		endingDate: { type: String, required: true },
 		name: { type: String, required: true },
+		trainerName: { type: String, required: true },
+		timeofClass: { type: String, required: true }
 	},
 	{ timestamps: true }
 );
