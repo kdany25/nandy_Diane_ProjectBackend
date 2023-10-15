@@ -8,7 +8,8 @@ const PaymentSchema = new mongoose.Schema(
 		endingDate: { type: String, required: true },
 		name: { type: String, required: true },
 		trainerName: { type: String, required: true },
-		timeofClass: { type: String, required: true }
+		timeofClass: { type: String, required: true },
+		trainerId: { type: String, required: true }
 	},
 	{ timestamps: true }
 );

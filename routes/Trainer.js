@@ -60,4 +60,37 @@ router.get("/", async (req, res) => {
 	}
 });
 
+// Define a route to delete a trainee from the Trainer model
+router.delete('/:trainerId/trainees/:traineeId', async (req, res) => {
+  const trainerId = req.params.trainerId;
+  const traineeId = req.params.traineeId;
+
+  try {
+    const trainer = await Trainer.findById(trainerId);
+
+    if (!trainer) {
+      return res.status(404).json({ message: 'Trainer not found' });
+    }
+
+    // Find the index of the trainee with the given traineeId
+    const traineeIndex = trainer.trainee.findIndex(
+      (trainee) => trainee.traineeId === traineeId
+    );
+
+    if (traineeIndex === -1) {
+      return res.status(404).json({ message: 'Trainee not found' });
+    }
+
+    // Remove the trainee from the array
+    trainer.trainee.splice(traineeIndex, 1);
+
+    // Save the updated trainer
+    await trainer.save();
+
+    res.json({ message: 'Trainee deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 module.exports = router;
