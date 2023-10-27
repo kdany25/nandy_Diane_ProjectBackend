@@ -4,7 +4,7 @@ import CryptoJS from "crypto-js";
 import jwt from "jsonwebtoken";
 
 const router = express.Router();
-//Create manager
+
 router.post("/register", async (req, res) => {
 	const newUser = new Manager({
 		name: req.body.name,
