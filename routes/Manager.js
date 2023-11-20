@@ -2,8 +2,48 @@ import express from "express";
 import Manager from "../models/Manager.model";
 import CryptoJS from "crypto-js";
 import jwt from "jsonwebtoken";
-
+import { ResetPasswordEmail } from "../utils/EmailTemplate";
+import nodemailer from "nodemailer";
 const router = express.Router();
+
+const createMailTransporter = () => {
+	const mailTransporter = nodemailer.createTransport({
+		service: "gmail",
+		port: 465,
+		secure: true,
+		logger: true,
+		debug: true,
+		secureConnection: false,
+		auth: {
+			user: process.env.EMAIL,
+			pass: process.env.PASSWORD,
+		},
+		tls: {
+			rejectUnauthorized: false,
+		},
+	});
+	return mailTransporter;
+};
+
+const sendResetEmail = (resetLink, email) => {
+	const transporter = createMailTransporter();
+	const mailOptions = {
+		from: process.env.EMAIL,
+		to: email,
+		subject: "Reset Password",
+		html: ResetPasswordEmail({
+			resetLink,
+		}),
+	};
+
+	transporter.sendMail(mailOptions, (error, info) => {
+		if (error) {
+			console.log(error);
+		} else {
+			console.log("passed");
+		}
+	});
+};
 
 router.post("/register", async (req, res) => {
 	const newUser = new Manager({
@@ -64,6 +104,57 @@ router.post("/login", async (req, res) => {
 		}
 	} catch (err) {
 		console.error(err);
+	}
+});
+
+router.post("/check-email", async (req, res) => {
+	const { email } = req.body;
+
+	try {
+		const user = await Manager.findOne({ email });
+
+		if (user) {
+			const resetLink = `http://localhost:3000/passwordResetManager?id=${user._id}`;
+			sendResetEmail(resetLink, email);
+
+			// Email exists in the database
+			return res.status(200).json({
+				message: "Email found in the database.",
+			});
+		} else {
+			// Email does not exist in the database
+			return res
+				.status(404)
+				.json({ error: "Email not found in the database." });
+		}
+	} catch (err) {
+		console.error(err);
+		return res.status(500).json({ error: "Internal server error." });
+	}
+});
+
+router.post("/update-password", async (req, res) => {
+	const { id, password } = req.body;
+
+	try {
+		const user = await Manager.findById(id);
+
+		if (!user) {
+			return res.status(404).json({ error: "User not found." });
+		}
+
+		// Update the user's password using CryptoJS encryption
+		user.password = CryptoJS.AES.encrypt(
+			password,
+			process.env.PASS_SEC
+		).toString();
+
+		await user.save();
+
+		res.status(200).json({ message: "Password updated successfully." });
+	} catch (err) {
+		console.error(err);
+		return res.status(500).json({ error: "Internal server error." });
 	}
 });
 
